@@ -1,0 +1,61 @@
+version: '3.3'
+
+networks:
+  back-db:
+    driver: bridge
+  back-front:
+    driver: bridge
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    restart : always
+    ports:
+      - '5432:5432'
+    env_file:
+      - .env
+    networks:
+      - back-db
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./back
+      target: back-build
+    env_file:
+      - .env
+    ports:
+      - '3001:3001'
+      - '5555:5555'
+    networks:
+      - back-db
+      - back-front
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    volumes:
+      - ./back:/usr/src/app
+      - /usr/src/app/node_modules
+
+  frontend:
+    build:
+      context: ./front
+      target: front-build
+    env_file:
+      - .env
+    ports:
+      - '3000:3000'
+    networks:
+      - back-front
+    depends_on:
+      - backend
+    restart: unless-stopped
+    volumes:
+     - ./front:/usr/src/app
+     - /usr/src/app/node_modules
+
+volumes:
+  postgres-data:
+

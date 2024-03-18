@@ -1,0 +1,131 @@
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["fullTextIndex", "fullTextSearch"]
+    binaryTargets   = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+enum GameRank {
+    Rookie
+    Novice
+    Adept
+    Master
+    Legend
+}
+
+// --------------------------------------USER--------------------------------------
+
+model User {
+    id               Int            @id @default(autoincrement())
+    email            String         @unique
+    name             String         @unique
+	nameDisplay      String
+    state            String
+    twoFactorEnabled Boolean        @default(false)
+    twoFactorSecret  String         @unique
+    pfp_url          String?
+    rejectAuto       Boolean        @default(false)
+    blocked          String[]
+    date             DateTime       @default(now())
+    invisibleMode    Boolean        @default(false)
+    privateMode      Boolean        @default(false)
+	profileNotif     Int            @default(0)
+    gameRank         GameRank       @default(Rookie)
+    achievement      Achievement[]  @relation("Achievement")
+    chatList         String[]
+	chatNotif        Json[]         @default([]) @db.Json
+    chat             Chat[]         @relation("Chat")
+    friendRequest    String[]
+    friends          Friends[]      @relation(name: "Friends")
+    matchHistory     MatchHistory[] @relation(name: "MatchHistoryUser")
+    simpleGames      SimpleGame[]   @relation("SimpleGame")
+    doubleGames      DoubleGame[]   @relation("DoubleGame")
+    messages         Message[]
+}
+
+// --------------------------------------GAME--------------------------------------
+
+model SimpleGame {
+    id       Int      @id
+    rank     GameRank @default(Rookie)
+    rankRate Int
+    win      Int
+    lose     Int
+    user     User?    @relation(name: "SimpleGame", fields: [id], references: [id])
+}
+
+model DoubleGame {
+    id       Int      @id
+    rank     GameRank @default(Rookie)
+    rankRate Int
+    win      Int
+    lose     Int
+    user     User     @relation(name: "DoubleGame", fields: [id], references: [id])
+}
+
+model MatchHistory {
+    id         Int     @id @default(autoincrement())
+    userId     Int
+    rankRate   Int
+    score_x    Int
+    score_y    Int
+    mode       String
+    difficulty String
+    date       String
+    winner     Boolean
+    opponentId Int
+    opponentRR Int
+    user       User    @relation(name: "MatchHistoryUser", fields: [userId], references: [id])
+}
+
+model Achievement {
+    id        Int   @id
+    all_index Int[] @default([0])
+    selected  Int   @default(0)
+    user      User  @relation(name: "Achievement", fields: [id], references: [id])
+}
+
+// --------------------------------------Chat--------------------------------------
+
+model Friends {
+    id           Int    @id @default(autoincrement())
+    userId       Int
+    friendstatus String
+    friendname   String
+    friendpfp    String
+    friendsInfo  User   @relation(name: "Friends", fields: [userId], references: [id])
+}
+
+model Chat {
+	id          Int      @id @default(autoincrement())
+	owner       String
+	next_owner  String?
+	admin       String[]
+	needPass    Boolean
+	password    String
+	pfp         String
+	capacity    Int
+	nbUsers     Int
+	roomName    String
+	description String
+	banned      String[]
+	muted       String[]
+	user        User[]   @relation("Chat")
+}
+
+model Message {
+    id         Int    @id @default(autoincrement())
+    type       String
+    time       String
+    userPfp    String
+    username   String
+    msg        String
+    groupName  String
+	lastInvite Boolean @default(false)
+    userId     Int
+    user       User    @relation(fields: [userId], references: [id])
+}

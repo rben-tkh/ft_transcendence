@@ -1,0 +1,27 @@
+{
+	"compilerOptions": {
+	"target": "ES2017",
+	"module": "commonjs",
+	"outDir": "./dist",
+	"rootDir": "./src",
+	"strict": true,
+	"esModuleInterop": true,
+	"skipLibCheck": true,
+	"forceConsistentCasingInFileNames": false,
+	"emitDecoratorMetadata": true,
+	"experimentalDecorators": true,
+	"types": ["express"],
+	"declaration": true,
+	"removeComments": true,
+	"allowSyntheticDefaultImports": true,
+	"sourceMap": true,
+	"baseUrl": "./",
+	"incremental": true,
+	"strictNullChecks": false,
+	"noImplicitAny": false,
+	"strictBindCallApply": false,
+	"noFallthroughCasesInSwitch": false
+	},
+	"include": ["src/**/*.ts","custom.d.ts", "prisma/**/*.ts"],
+	"exclude": ["node_modules"]
+}
