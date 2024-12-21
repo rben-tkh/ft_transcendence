@@ -13,6 +13,7 @@ COPY tsconfig.json ./
 
 # Installez les dépendances
 RUN npm install --legacy-peer-deps
+RUN npm install -g npm@latest prisma
 
 # Copiez le reste des fichiers
 COPY . .
