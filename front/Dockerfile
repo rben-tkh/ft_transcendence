@@ -1,4 +1,4 @@
-FROM node:18-alpine AS front-build
+FROM node:20 AS front-build
 
 WORKDIR /usr/src/app
 
