@@ -1,5 +1,5 @@
 # Utilisez la même image de base que celle de votre application backend
-FROM node:18-alpine as back-build
+FROM node:20 as back-build
 
 # Créez le répertoire de travail
 WORKDIR /usr/src/app
