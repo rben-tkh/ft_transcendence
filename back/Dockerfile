@@ -22,4 +22,4 @@ COPY . .
 EXPOSE 3001
 
 # Démarrez l'application
-ENTRYPOINT [  "sh", "/script.sh" ]
+ENTRYPOINT [ "npm", "run", "start" ]
