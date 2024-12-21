@@ -21,9 +21,5 @@ COPY . .
 # Exposez le port 3000
 EXPOSE 3001
 
-COPY ./src/script/script.sh /
-
-RUN chmod 755 /script.sh
-
 # Démarrez l'application
 ENTRYPOINT [  "sh", "/script.sh" ]
