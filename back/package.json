@@ -6,8 +6,7 @@
   "scripts": {
     "prisma:generate": "prisma generate --schema=./src/prisma/schema.prisma",
     "prisma:migrate": "prisma migrate dev --name migration_$(date +%Y%m%d%H%M%S) --schema=./src/prisma/schema.prisma",
-    "watch:prisma": "nodemon --watch prisma/schema.prisma --exec 'npm run prisma:generate && npm run prisma:migrate && npm run prisma:generate'",
-    "start": "nest start",
+    "start": "nodemon --watch prisma/schema.prisma --exec 'npm run prisma:generate && npm run prisma:migrate && nest start'",
     "start:dev": "nest build && nest start --watch --preserveWatchOutput",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
