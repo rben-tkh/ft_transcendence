@@ -19,6 +19,11 @@ services:
       - back-db
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
 
   backend:
     build:
@@ -38,6 +43,11 @@ services:
     volumes:
       - ./back:/usr/src/app
       - /usr/src/app/node_modules
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
 
   frontend:
     build:
@@ -55,7 +65,11 @@ services:
     volumes:
      - ./front:/usr/src/app
      - /usr/src/app/node_modules
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
 
 volumes:
   postgres-data:
-
